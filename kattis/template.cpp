@@ -1,7 +1,12 @@
 /* -*- Mode: C++ -*- */
 
 /**
+ *  Author: Fredrik Wallström
+ *  Date:
  *
+ *  Comments:
+ *
+ *  Lessons Learned:
  */
 
 #include <algorithm>
