@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis ljutnja/Ljutnja.cpp)
+add_executable(kattis unionfind/UnionFind.cpp)
