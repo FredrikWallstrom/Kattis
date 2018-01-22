@@ -6,7 +6,7 @@
  *
  *  Comments: Union-Find data structure.
  *
- *  Lessons Learned: Still need to work on, to think if my first solution is fast enough instead of just test it.
+ *  Lessons Learned: Need to work on analyze my solution and don't just test it in Kattis.
  */
 
 #include <algorithm>
@@ -30,71 +30,82 @@
 using namespace std;
 typedef vector<int> vi;
 
+/**
+ * Struct that contains the size of the nodes, needed to join the smaller subtree with the larger one.
+ */
 struct node {
     int size;
-    int value;
+    node *parent;
 };
 
+// Global array consist of pointers to the nodes.
 node *values[1000000];
 
-node findRoot(int value) {
-
-    while(values[value]->value != value){
+/**
+ * Find the root of given value, also do path compression, i.e skip some nodes on the way to root node.
+ * If we have tree 1 -> 2 -> 3 (1 is root). Than we want that values[3] should point directly on 1 and not on 2.
+ */
+node* findRoot(int value) {
+    while(values[value]->parent != nullptr){
         // Path compression
-        values[value] = values[values[value]->value];
-        value = values[value]->value;
+        values[value] = values[value]->parent;
     }
-
-    return *values[value];
+    return values[value];
 }
 
+/**
+ * Function that will union element a and i. It will join element a to i if a is smaller than i, and vice versa.
+ */
 void unionCall(int a, int i) {
-    node rootA = findRoot(a);
-    node rootI = findRoot(i);
+    node *rootA = findRoot(a);
+    node *rootI = findRoot(i);
 
     // a and i is already union.
-    if(rootA.value == rootI.value) return;
+    if(rootA == rootI) return;
 
     // Join the smaller subset, with the larger one.
-    if(rootA.size < rootI.size){
-        values[rootI.value] = values[rootA.value];
-        rootI.size += rootA.size;
-        rootA.size = 0;
+    if(rootA->size < rootI->size){
+        rootA->parent = rootI;
+        rootI->size += rootA->size;
+        rootA->size = 0;
     }else{
-        values[rootA.value] = values[rootI.value];
-        rootA.size += rootI.size;
-        rootI.size = 0;
+        rootI->parent = rootA;
+        rootA->size += rootI->size;
+        rootI->size = 0;
     }
 }
 
 bool findCall(int a, int i) {
-    return findRoot(i).value == findRoot(a).value;
-
+    return findRoot(i) == findRoot(a);
 }
 
+/**
+ * Main function that will read the input and then go through all queries, either call unionCall or findCall.
+ */
 int main() {
-
     int n, q, a, b;
     char unionOrFind;
-    cin >> n >> q;
+    scanf ("%d",&n);
+    scanf ("%d",&q);
 
     // Fill the arrays with initial values.
     for (int j = 0; j < n; ++j) {
-        auto *root = new node;
-        root->size = 0;
-        root->value = j;
+        node *root = new node;
+        root->size = 1;
+        root->parent = nullptr;
         values[j] = root;
     }
 
     // Go through all queries.
     for (int i = 0; i < q; ++i) {
-        cin >> unionOrFind;
-        cin >> a >> b;
+        scanf(" %c", &unionOrFind);
+        scanf ("%d",&a);
+        scanf ("%d",&b);
         if(unionOrFind == '=') unionCall(a, b);
         else if(unionOrFind == '?') {
             bool same = findCall(a, b);
-            if(same) cout << "yes" << endl;
-            else cout << "no" << endl;
+            if(same) printf("%s", "yes\n");
+            else printf("%s", "no\n");
         }
     }
     return 0;
