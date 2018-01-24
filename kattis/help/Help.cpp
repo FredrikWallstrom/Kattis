@@ -4,9 +4,23 @@
  *  Author: Fredrik Wallström
  *  Date:
  *
- *  Comments:
+ *  Comments: This problem is to match two patterns, like,
+ *          how now brown <animal>
+ *          <foo> now <color> cow
  *
- *  Lessons Learned:
+ *          Here the resulting string should be:
+ *          how now brown cow
+ *
+ *          Just change <foo> to how, <color> to brown and <animal> to cow.
+ *
+ *          You could have like:
+ *          <animal> <animal> cow <animal> <cat>
+ *          <cat> <hej> <hej> <animal> <cat>
+ *
+ *          Which will make it little more tricky.
+ *
+ *  Lessons Learned: Think about if the first solution is really working or not.
+ *                   Try some more "harder" test examples or something to see if it the suggested solution work!
  */
 
 #include <algorithm>
@@ -31,6 +45,14 @@ using namespace std;
 typedef vector<int> vi;
 typedef vector<string> vs;
 
+void replaceAll(vs &vector, string oldValue, string newValue){
+    for (auto &i : vector) {
+        if(i == oldValue) {
+            i = newValue;
+        }
+    }
+}
+
 int main() {
     int nrTestCases;
 
@@ -39,6 +61,7 @@ int main() {
 
     while(nrTestCases--){
 
+        // Read the first line, save it in vector.
         string s;
         vs firstLine;
         string line;
@@ -48,6 +71,7 @@ int main() {
             firstLine.push_back(s);
         }
 
+        // Read the second line, save it in vector.
         string s2;
         vs secondLine;
         string line2;
@@ -62,114 +86,47 @@ int main() {
             continue;
         }
 
-        map<string, string> v2;
-        map<string, string> v1;
+        restart:
+        // Go through vector, check if we can choose some <value>.
+        // Restart when we had change every value in the vector.
+        for (int i = 0; i < firstLine.size(); ++i) {
 
-        unsigned long loop_size = firstLine.size();
-        string result[loop_size];
+            if(firstLine[i].at(0) == '<' && secondLine[i].at(0) != '<'){
+                // Change all values in first line to the value in the second line.
+                replaceAll(firstLine, firstLine[i], secondLine[i]);
+                goto restart;
+            }
+            else if(firstLine[i].at(0) != '<' && secondLine[i].at(0) == '<'){
+                // Change all values in second line to the value in the first line.
+                replaceAll(secondLine, secondLine[i], firstLine[i]);
+                goto restart;
+            }
 
-        bool breaked = false;
+        }
 
-        for (int j = 0; j < loop_size; ++j) {
-            if (firstLine[j].at(0) != '<' && secondLine[j].at(0) != '<') {
-                if (firstLine[j] == secondLine[j]) {
-                    result[j] = firstLine[j];
-                    continue;
-                } else {
-                    breaked = true;
-                    break;
-                }
-            } else if (firstLine[j].at(0) != '<' && secondLine[j].at(0) == '<') {
-                map<string, string>::iterator it;
-                it = v2.find(secondLine[j]);
-                if (it != v2.end()) {
-                    // Found
-                    if (v2.at(secondLine[j]) == firstLine[j]) {
-                        result[j] = firstLine[j];
-                        continue;
-                    } else {
-                        breaked = true;
-                        break;
-                    }
-                } else {
-                    // Not found
-                    v2[secondLine[j]] = firstLine[j];
-                    result[j] = firstLine[j];
-                    continue;
-                }
-            } else if (firstLine[j].at(0) == '<' && secondLine[j].at(0) != '<') {
+        // This case is for when we got a value that is the same, that is not set yet,
+        // like <value> <value> for both first and second pattern.
+        // Restart if so is the case, to set all other values to that.
+        for (int j = 0; j < firstLine.size(); ++j) {
+            if(firstLine[j].at(0) == '<' && firstLine[j].at(0) == '<'){
+                // Change all values in first line to "whatever".
+                replaceAll(firstLine, firstLine[j], "whatever");
+                // Change all values in second line to "whatever".
+                replaceAll(secondLine, secondLine[j], "whatever");
 
-                map<string, string>::iterator it;
-                it = v1.find(firstLine[j]);
-                if (it != v1.end()) {
-                    // Found
-                    if (v1.at(firstLine[j]) == secondLine[j]) {
-                        result[j] = secondLine[j];
-                        continue;
-                    } else {
-                        breaked = true;
-                        break;
-                    }
-                } else {
-                    // Not found
-                    v1[firstLine[j]] = secondLine[j];
-                    result[j] = secondLine[j];
-                    continue;
-                }
+                goto restart;
             }
         }
 
-        if(breaked) {
-            cout << "-" << endl;
-            continue;
-        }
-
-        for (int i = 0; i < loop_size; ++i) {
-            if(firstLine[i].at(0) == '<' && secondLine[i].at(0) == '<') {
-                map<string, string>::iterator it1;
-                it1 = v1.find(firstLine[i]);
-
-                map<string, string>::iterator it2;
-                it2 = v2.find(secondLine[i]);
-
-                if (it1 != v1.end() && it2 != v2.end()) {
-                    if(it1->second == it2->second) {
-                        result[i] = it1->second;
-                        continue;
-                    }else{
-                        breaked = true;
-                        break;
-                    }
-                }
-                else if (it1 != v1.end() && it2 == v2.end()) {
-                    result[i] = it1->second;
-                    v2[secondLine[i]] = it1->second;
-                    continue;
-                }
-                else if (it1 == v1.end() && it2 != v2.end()) {
-                    result[i] = it2->second;
-                    v1[firstLine[i]] = it2->second;
-                    continue;
-                }
+        // Compare the vectors and see if match.
+        if(firstLine == secondLine){
+            for (const auto &i : secondLine) {
+                cout << i << " ";
             }
-        }
+            cout << endl;
 
-        if(breaked) {
-            cout << "-" << endl;
-            continue;
-        }
+        }else cout << "-" << endl;
 
-        for (int l = 0; l < loop_size; ++l) {
-            if(firstLine[i].at(0) == '<' && secondLine[i].at(0) == '<') {
-
-
-            }
-        }
-
-        for (int k = 0; k < loop_size; ++k) {
-            cout << result[k] << " ";
-        }
-        cout << endl;
     }
     return 0;
 }

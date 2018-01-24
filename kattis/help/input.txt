@@ -1,14 +1,13 @@
-4
+5
 how now brown <animal>
 <foo> now <color> cow
 who are you
 <a> <b> <a>
 <a> b
 c <a>
-<animal>    <animal>    cow     <animal>   <cat>
-<cat>       <hej>       <hej>   <animal>   <cat>
-
-
-
+<animal> <animal> cow <animal> <cat>
+<cat> <hej> <hej> <animal> <cat>
+<animal> <animal> cow <animal> <cat> <sofia> <lars> <sofia>
+<cat> <hej> <hej> <animal> <cat> <sofia> <lars> <lars>
 
 
