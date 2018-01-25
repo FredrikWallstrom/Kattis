@@ -2,7 +2,7 @@
 
 /**
  *  Author: Fredrik Wallström
- *  Date:
+ *  Date: 24/1 -18
  *
  *  Comments: This problem is to match two patterns, like,
  *          how now brown <animal>
