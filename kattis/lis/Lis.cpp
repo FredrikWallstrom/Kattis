@@ -2,9 +2,9 @@
 
 /**
  *  Author: Fredrik Wallström
- *  Date:
+ *  Date: 26/1 -18
  *
- *  Comments:
+ *  Comments: Exercise is to build the longest increasing subsequence of given sequence.
  *
  *  Lessons Learned:
  */
@@ -28,59 +28,91 @@
 #include <iostream>
 
 using namespace std;
-typedef vector<long int> vi;
 
-struct node{
-    long int value;
-    node *previous;
-};
-
-vi lis(vector<long> sequence) {
-    vi lastElem;
-    vector<vi > savedVectors;
-    lastElem.push_back(sequence[0]);
-    vi v;
-    v.push_back(0);
-    savedVectors.push_back(v);
-    for (int i = 1; i < sequence.size(); ++i) {
-        vi current;
-        bool update = false;
-        for (int j = 0; j < lastElem.size(); ++j) {
-            if(sequence[i] <= lastElem[j]){
-                lastElem[j] = sequence[i];
-                vi l = savedVectors[j];
-                l[l.size()-1] = i;
-                savedVectors[j] = l;
-                break;
-            }else if(j == lastElem.size()-1){
-                update = true;
-                current = savedVectors[j];
-            }
-        }
-        if(update){
-            lastElem.push_back(sequence[i]);
-            current.push_back(i);
-            savedVectors.push_back(current);
+/**
+ * Binary search that will return the index of the element we want to change in the lastElem.
+ */
+int binarySearch(int i, vector<int> &lastElem, vector<int> &sequence, int length){
+    int start = 0;
+    int end  = length-1;
+    while (start < end){
+        int mid = (start + end) / 2;
+        if(sequence[lastElem[mid]] < sequence[i]){
+            start = mid + 1;
+        }else{
+            end = mid;
         }
     }
-    vi lis = savedVectors[savedVectors.size()-1];
-    return lis;
+    return start;
 }
+
+/**
+ * The idea is to o through the list of sequence, one element at the time, and build a new list.
+ * We can place the new element in the list at the beginning, in the middle somewhere or at the end.
+ * It depends on the new element is lower than the first element, between first element and last element or
+ * higher than the last element.
+ * We need to keep track of indexes of previous elements when we insert something in the new list to
+ * reconstruct the list at the end.
+ */
+vector<int> lis(vector<int> sequence) {
+    vector<int> previous(sequence.size(), -1);
+    vector<int> lastElem(sequence.size(), 0);
+    int seqLength = 1;
+
+
+    for (int i = 1; i < sequence.size(); ++i) {
+        // Place the current element in the first place in the builded list.
+        if(sequence[i] < sequence[lastElem[0]]){
+            lastElem[0] = i;
+        }
+
+        // Place the current element in the last place in the builded list.
+        else if(sequence[i] > sequence[lastElem[seqLength-1]]){
+            previous[i] = lastElem[seqLength-1];
+            lastElem[seqLength] = i;
+            seqLength++;
+        }
+
+        // Replace Index with the current element, since current element fits somewhere in the list.
+        // Index is given from binary search.
+        else{
+            int index = binarySearch(i, lastElem, sequence, seqLength);
+            previous[i] = lastElem[index - 1];
+            lastElem[index] = i;
+            if(index > seqLength){
+                seqLength++;
+            }
+        }
+    }
+    // Reconstruct the list.
+    vector<int> res(seqLength);
+    int index = lastElem[seqLength-1];
+    for (int j = seqLength-1; j >= 0; j--) {
+        res[j] = index;
+        index = previous[index];
+    }
+    return res;
+}
+
 
 int main() {
     int testCases;
-    while(cin >> testCases){
+    while(scanf("%d", &testCases) == 1){
         // Read the sequence.
-        long int value;
-        vi sequence;
+        int value;
+        vector<int> sequence;
         while(testCases--){
-            cin >> value;
+            scanf("%d", &value);
             sequence.push_back(value);
         }
-        vi res = lis(sequence);
-        cout << res.size() << endl;
-        for (long re : res) cout << re << " ";
-        cout << endl;
+        vector<int> res = lis(sequence);
+
+        // Print the result
+        printf("%d\n", res.size());
+        for (int re : res) {
+            printf("%d ", re);
+        }
+        printf("\n");
     }
     return 0;
 }
