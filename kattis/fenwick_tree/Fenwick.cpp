@@ -2,11 +2,11 @@
 
 /**
  *  Author: Fredrik Wallström
- *  Date: 22/1 -18
+ *  Date: 29/1 -18
  *
- *  Comments: Union-Find data structure.
+ *  Comments: Fenwick tree.
  *
- *  Lessons Learned: Need to work on analyze my solution and don't just test it in Kattis.
+ *  Lessons Learned: 
  */
 
 #include <algorithm>
@@ -30,56 +30,59 @@
 using namespace std;
 typedef vector<int> vi;
 
-/**
- * Global variable to store array.
- */
-int a[];
+long long n,q;
+char ft;
+long long fenwickTree[5000001] ,delta;
 
 /**
  * Increases a[i] with the number delta.
+ * Go forward in the bitTree and change all the values with delta.
+ * The last syntax is to add the last set bit
  */
-void add(index i, number delta){
-    while(i < n){
-        a[i] += delta;
-        index += i & -i;
+void add(long long int i, long long int delta){
+    // Add on i+1 since we want to increment the value on position i not on index i.
+    i++;
+    while(i <= n){
+        fenwickTree[i] += delta;
+        i += i & -i;
     }
 }
 
 /**
  * A query for the values of a[0] + a[1] + ... + a[i-1].
+ * Go through backward in the bitTree and check sum all values at the way down.
+ * The last syntax is to remove the last set bit
  */
-int number_sum(index end){
-    int result = 0;
+long long int number_sum(long long end){
+    long long int result = 0;
     while(end > 0){
-        result += a[end];
+        result += fenwickTree[end];
         end -= end & -end;
     }
     return result;
 }
+
 /**
- * Main function that will read the input and then go through all queries, either call unionCall or findCall.
+ * Main function that will read the input and then go through all queries, either call sum or add.
  */
 int main() {
-    int n, q, i, delta;
-    char unionOrFind;
-    scanf ("%d",&n);
-    a[n];
-    // Fill the arrays with initial values.
-    for (int j = 0; j < n; ++j) a[j] == 0;
+    ios::sync_with_stdio(false);
+    long long int i;
 
-    scanf ("%d",&q);
-    // Go through all queries.
-    for (int i = 0; i < q; ++i) {
-        scanf("%c", &ft);
-        scanf ("%d",&i);
-        if(ft == '+') {
-            scanf ("%d",&delta);
+    scanf("%lld", &n);
+    scanf("%lld", &q);
+    
+    while(q > 0){
+        scanf(" %c", &ft);
+        scanf("%lld", &i);
+        if(ft=='+'){
+            scanf("%lld", &delta);
             add(i, delta);
+        }else{
+            long long int res = number_sum(i);
+            printf("%lld\n", res);
         }
-        else if(ft == '?') {
-            res = number_sum(i);
-            printf("&d\n", res);
-        }
+        q--;
     }
     return 0;
 }
