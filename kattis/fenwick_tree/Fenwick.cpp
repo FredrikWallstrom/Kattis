@@ -40,8 +40,6 @@ long long fenwickTree[5000001] ,delta;
  * The last syntax is to add the last set bit
  */
 void add(long long int i, long long int delta){
-    // Add on i+1 since we want to increment the value on position i not on index i.
-    i++;
     while(i <= n){
         fenwickTree[i] += delta;
         i += i & -i;
@@ -77,7 +75,7 @@ int main() {
         scanf("%lld", &i);
         if(ft=='+'){
             scanf("%lld", &delta);
-            add(i, delta);
+            add(i+1, delta);
         }else{
             long long int res = number_sum(i);
             printf("%lld\n", res);
