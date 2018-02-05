@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis ignore_the_garbage/IgnoreTheGarbage.cpp)
+add_executable(kattis polynomial_multiplication_2/PolynomialMultiplication2.cpp)
