@@ -4,7 +4,7 @@
  *  Author: Fredrik Wallström
  *  Date: 22/1 -18
  *
- *  Comments: Union-Find data structure.
+ *  Comments: Union-Find data structure. Used when we want to check something is connected to another thing.
  *
  *  Lessons Learned: Need to work on analyze my solution and don't just test it in Kattis.
  */

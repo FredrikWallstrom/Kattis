@@ -4,7 +4,7 @@
  *  Author: Fredrik Wallström
  *  Date: 29/1 -18
  *
- *  Comments: Fenwick tree.
+ *  Comments: Fenwick tree. Will be used when we want to sum something in a list etc. range sum also.
  *
  *  Lessons Learned:
  */

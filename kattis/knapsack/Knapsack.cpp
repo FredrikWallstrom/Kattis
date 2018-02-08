@@ -2,9 +2,9 @@
 
 /**
  *  Author: Fredrik Wallström
- *  Date:
+ *  Date: 8/2 - 18
  *
- *  Comments:
+ *  Comments: This is used when we are solving something that is involving weight on some way, and different objects.
  *
  *  Lessons Learned:
  */
@@ -86,11 +86,10 @@ vi knapsack(int capacity, object objects[]){
 }
 
 int main() {
-    // Store value and weight as an struct object
-    object objects[2002];
     double c;
-
     while(cin >> c >> numberOfObjects){
+        // Store value and weight as an struct object, this is how many objects we have.
+        object objects[numberOfObjects];
         auto capacity = static_cast<int>(floor(c));
 
         // Read all objects.
