@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis dijkstra/Dijkstra.cpp)
+add_executable(kattis uxuhul_voting_system/UxuhulVotingSystem.cpp)
