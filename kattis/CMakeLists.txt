@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis dijkstra_time_table/DijkstraTimeTable.cpp)
+add_executable(kattis bellman_ford/BellmanFord.cpp)

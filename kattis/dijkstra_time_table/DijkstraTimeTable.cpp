@@ -2,9 +2,9 @@
 
 /**
  *  Author: Fredrik Wallström
- *  Date: 12/2 - 18
+ *  Date: 15/2 - 18
  *
- *  Comments:
+ *  Comments: Dijkstras with time intervals.
  *
  *  Lessons Learned:
  */
