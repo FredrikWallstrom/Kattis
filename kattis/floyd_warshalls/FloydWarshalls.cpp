@@ -42,6 +42,7 @@ struct Graph{
     int nrNodes{}, nrEdges{};
     vector<Edge> edges;
     int dist[150][150]{};
+    int prev[150][150]{};
 
     void addEdge(int &source, int &destination, int &cost){
         Edge edge = Edge();
@@ -62,6 +63,7 @@ public:
         for (int i = 0; i < graph.nrNodes; ++i) {
             for (int j = 0; j < graph.nrNodes; ++j) {
                 graph.dist[i][j] = INF;
+                graph.prev[i][j] = NULL;
             }
         }
 
@@ -70,6 +72,7 @@ public:
         for (int l = 0; l < graph.nrEdges; ++l) {
             Edge e = graph.edges[l];
             graph.dist[e.source][e.destination] = min(e.cost, graph.dist[e.source][e.destination]);
+            graph.prev[e.source][e.destination] = e.destination;
         }
 
         // Set distance to itself to 0
@@ -84,6 +87,7 @@ public:
                     if(graph.dist[i][k] != INF && graph.dist[k][j] != INF &&
                             graph.dist[i][j] > graph.dist[i][k] + graph.dist[k][j]){
                         graph.dist[i][j] = graph.dist[i][k] + graph.dist[k][j];
+                        graph.prev[i][j] = graph.prev[i][k];
                     }
                 }
             }
@@ -98,11 +102,28 @@ public:
                         // All pairs using k is in the negative cycle.
                         if (graph.dist[i][k] != INF && graph.dist[k][j] != INF) {
                             graph.dist[i][j] = -INF;
+                            graph.prev[i][j] = -INF;
                         }
                     }
                 }
             }
         }
+    }
+
+    string constructPath(Graph &graph, int &from, int &to){
+        string path;
+        if(graph.prev[from][to] == NULL || graph.prev[from][to] == -INF){
+            // No Path
+            return path;
+        }
+
+        path += to_string(from);
+        while(from != to){
+            from = graph.prev[from][to];
+            path += to_string(from);
+        }
+
+        return path;
     }
 };
 
