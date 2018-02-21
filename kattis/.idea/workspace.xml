@@ -29,21 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="George.cpp" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/george/George.cpp">
+      <file leaf-file-name="mst.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/minimal_spanning_tree/mst.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="160" column="17" lean-forward="true" selection-start-line="160" selection-start-column="17" selection-end-line="160" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="22" lean-forward="false" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+            <state relative-caret-position="240">
+              <caret line="34" column="12" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -74,6 +64,7 @@
       <find>unordered</find>
       <find>unor</find>
       <find>map</find>
+      <find>node</find>
       <find>cout</find>
     </findStrings>
   </component>
@@ -127,6 +118,8 @@
         <option value="$PROJECT_DIR$/floyd_warshalls/FloydWarshalls.cpp" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/george/George.cpp" />
+        <option value="$PROJECT_DIR$/minimal_spanning_tree/input.txt" />
+        <option value="$PROJECT_DIR$/minimal_spanning_tree/mst.cpp" />
       </list>
     </option>
   </component>
@@ -166,12 +159,17 @@
             <path>
               <item name="kattis" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="kattis" type="462c0819:PsiDirectoryNode" />
-              <item name="dijkstra_time_table" type="462c0819:PsiDirectoryNode" />
+              <item name="dijkstra" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="kattis" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="kattis" type="462c0819:PsiDirectoryNode" />
               <item name="george" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kattis" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="kattis" type="462c0819:PsiDirectoryNode" />
+              <item name="minimal_spanning_tree" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -435,11 +433,12 @@
       <workItem from="1519068799023" duration="1092000" />
       <workItem from="1519069916053" duration="87000" />
       <workItem from="1519126263305" duration="7957000" />
+      <workItem from="1519195753179" duration="12304000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272402000" />
+    <option name="totallyTimeSpent" value="284706000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="6" />
@@ -474,19 +473,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="188" />
+      <option name="time" value="234" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/unionfind/UnionFind.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unionfind/UnionFind.h" />
     <entry file="file://$PROJECT_DIR$/unionfind/inputTwo.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -664,13 +655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/unionfind/UnionFind.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="106" column="21" lean-forward="false" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dijkstra/input.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -755,13 +739,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dijkstra/Dijkstra.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="103" column="31" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="134" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include/limits.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -787,7 +764,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="4" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -795,7 +771,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="128" column="0" lean-forward="false" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -803,6 +778,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
           <caret line="6" column="44" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="158" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dijkstra/Dijkstra.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="934">
+          <caret line="126" column="74" lean-forward="true" selection-start-line="126" selection-start-column="74" selection-end-line="126" selection-end-column="109" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/george/George.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1280">
+          <caret line="146" column="0" lean-forward="true" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -815,10 +805,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/george/George.cpp">
+    <entry file="file://$PROJECT_DIR$/unionfind/UnionFind.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="160" column="17" lean-forward="true" selection-start-line="160" selection-start-column="17" selection-end-line="160" selection-end-column="17" />
+        <state relative-caret-position="840">
+          <caret line="94" column="21" lean-forward="true" selection-start-line="94" selection-start-column="21" selection-end-line="94" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/minimal_spanning_tree/input.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="14" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/minimal_spanning_tree/mst.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="34" column="12" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
           <folding />
         </state>
       </provider>

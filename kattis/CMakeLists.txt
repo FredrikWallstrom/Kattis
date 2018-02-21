@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis george/George.cpp)
+add_executable(kattis minimal_spanning_tree/mst.cpp)
