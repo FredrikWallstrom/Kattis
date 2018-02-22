@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis minimal_spanning_tree/mst.cpp)
+add_executable(kattis pick_up_sticks/PickUpSticks.cpp)
