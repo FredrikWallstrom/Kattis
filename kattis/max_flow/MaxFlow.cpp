@@ -31,35 +31,43 @@
 #include <climits>
 
 using namespace std;
-const static int nrOfRows = 500;
-const static int nrOfColumns = 500;
 
 struct Edge{
     int fromNode, toNode;
     long int capacity;
 };
 
+struct Node{
+    vector<int> neighbours;
+};
+
 struct Graph{
-    unordered_map<int, vector<int> > neighbours;
-    int nrNodes;
-    long int edges[nrOfRows][nrOfColumns]{};
-    long int residualEdges[nrOfRows][nrOfColumns]{};
+    vector<Edge> edges;
+    vector<Node> nodes;
 
     void addEdge(int &fromIndex, int &toIndex, long int &capacity){
-        edges[fromIndex][toIndex] = capacity;
-        residualEdges[fromIndex][toIndex] = capacity;
-        neighbours[fromIndex].push_back(toIndex);
+        Edge e = Edge();
+        e.fromNode = fromIndex;
+        e.toNode = toIndex;
+        e.capacity = capacity;
+        edges.push_back(e);
 
         // Need to add reverse edge so we can traverse it if flow is full.
-        neighbours[toIndex].push_back(fromIndex);
+        nodes[fromIndex].neighbours.push_back(toIndex);
+        nodes[toIndex].neighbours.push_back(fromIndex);
     };
+
+    void addNode(int &node){
+        Node n = Node();
+        nodes.push_back(n);
+    }
 };
 
 struct FordFulkerson{
 
-    bool bfs(int &source, int &sink, int prev[], Graph &graph) {
-        bool visited[graph.nrNodes];
-        for (int i = 0; i < graph.nrNodes; ++i) visited[i] = false;
+    bool bfs(int &source, int &sink, int prev[], vector<vector<long int> > residualEdges, Graph &graph) {
+        bool visited[graph.nodes.size()];
+        for (int i = 0; i < graph.nodes.size(); ++i) visited[i] = false;
 
         queue<int> q;
         q.push(source);
@@ -70,9 +78,9 @@ struct FordFulkerson{
         {
             int from = q.front();
             q.pop();
-            vector<int> neighbours = graph.neighbours[from];
+            vector<int> neighbours = graph.nodes[from].neighbours;
             for (int neighbour : neighbours) {
-                if (!visited[neighbour] && graph.residualEdges[from][neighbour] > 0)
+                if (!visited[neighbour] && residualEdges[from][neighbour] > 0)
                 {
                     q.push(neighbour);
                     prev[neighbour] = from;
@@ -84,15 +92,16 @@ struct FordFulkerson{
     }
 
     // Go through all possible edges and calculate the flow through that edge.
-    vector<Edge> calcFlowGraph(Graph &graph){
+    vector<Edge> calcFlowGraph(Graph &graph, vector<vector<long int> > &edges,
+                               vector<vector<long int> > &residualEdges){
         vector<Edge> res;
-        for (int i = 0; i < graph.nrNodes; ++i) {
-            for (int j = 0; j < graph.nrNodes; ++j) {
-                if(graph.edges[i][j] - graph.residualEdges[i][j] > 0){
+        for (int i = 0; i < graph.nodes.size(); ++i) {
+            for (int j = 0; j < graph.nodes.size(); ++j) {
+                if(edges[i][j] - residualEdges[i][j] > 0){
                     Edge e = Edge();
                     e.fromNode = i;
                     e.toNode = j;
-                    e.capacity = graph.edges[i][j] - graph.residualEdges[i][j];
+                    e.capacity = edges[i][j] - residualEdges[i][j];
                     res.push_back(e);
                 }
             }
@@ -101,13 +110,21 @@ struct FordFulkerson{
     }
 
     pair<long int, vector<Edge> > maxFlow(Graph &graph, int &source, int &sink) {
-        int prev[graph.nrNodes];
+        vector<vector<long int> > edges(graph.nodes.size(), (vector<long int>(graph.nodes.size(),0)));
+        vector<vector<long int> > residualEdges(graph.nodes.size(), (vector<long int>(graph.nodes.size(),0)));
+
+        for (auto e : graph.edges) {
+            edges[e.fromNode][e.toNode] = e.capacity;
+            residualEdges[e.fromNode][e.toNode] = e.capacity;
+        }
+
+        int prev[graph.nodes.size()];
         long int flow = 0;
 
         while(true)
         {
             // Check if there is a way from source to sink
-            if(!bfs(source, sink, prev, graph)) break;
+            if(!bfs(source, sink, prev, residualEdges, graph)) break;
 
             // Calculate highest possible flow from source to sink
             bool firstRun = true;
@@ -115,25 +132,25 @@ struct FordFulkerson{
             for (int to = sink; to != source; to = prev[to]) {
                 int from = prev[to];
                 if(firstRun){
-                    possibleFlow = graph.residualEdges[from][to];
+                    possibleFlow = residualEdges[from][to];
                     firstRun = false;
                 }else{
-                    possibleFlow = min(possibleFlow, graph.residualEdges[from][to]);
+                    possibleFlow = min(possibleFlow, residualEdges[from][to]);
                 }
             }
 
             // Update capacities
             for (int to = sink; to != source; to = prev[to]) {
                 int from = prev[to];
-                graph.residualEdges[from][to] -= possibleFlow;
-                graph.residualEdges[to][from] += possibleFlow;
+                residualEdges[from][to] -= possibleFlow;
+                residualEdges[to][from] += possibleFlow;
             }
 
             // Set flow
             flow += possibleFlow;
         }
 
-        vector<Edge> flowGraph = calcFlowGraph(graph);
+        vector<Edge> flowGraph = calcFlowGraph(graph, edges, residualEdges);
         return make_pair(flow, flowGraph);
     }
 };
@@ -149,8 +166,9 @@ int main() {
     Graph graph = Graph();
     FordFulkerson fk = FordFulkerson();
 
-    graph.nrNodes = nrNodes;
-
+    for (int i = 0; i < nrNodes; ++i) {
+        graph.addNode(i);
+    }
     for (int i = 0; i < nrEdges; ++i) {
         scanf("%d%d%ld", &fromNode, &toNode, &capacity);
         graph.addEdge(fromNode, toNode, capacity);
