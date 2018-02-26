@@ -3,4 +3,4 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis max_flow/MaxFlow.cpp)
+add_executable(kattis ocean_currents/OceanCurrents.cpp)
