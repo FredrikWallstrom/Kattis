@@ -30,53 +30,47 @@
 #include <climits>
 
 using namespace std;
-typedef map<int, int> dataStructure;
+typedef vector<long long int> dataStructure;
 
 struct Node{
-    int id;
+    long long int id;
     bool visited = false;
-    vector<pair<int, Node*> > neighbours;
+    vector<pair<long long int, Node*> > neighbours;
 };
 
 struct Graph{
-    map<int, Node> nodes;
+    vector<Node> nodes;
 
-    void addNode(int &node){
-        if(!nodes.count(node)){
-            Node n = Node();
-            n.id = node;
-            nodes[node] = n;
-        }
+    void addNode(long long int &node){
+        Node n = Node();
+        n.id = node;
+        nodes.push_back(n);
     }
 
-    void addEdge(int &fromIndex, int &toIndex, int cost){
-        Node *fromNode = &nodes.at(fromIndex);
-        Node *toNode = &nodes.at(toIndex);
+    void addEdge(long long int &fromIndex, long long int &toIndex, long long int cost){
+        Node *fromNode = &nodes[fromIndex];
+        Node *toNode = &nodes[toIndex];
         fromNode->neighbours.emplace_back(cost, toNode);
-    };
+    }
 };
 
 class Dijkstras{
 
 public:
 
-    pair<dataStructure, dataStructure> shortestPath(Graph &graph, int &startIndex, int &endIndex) {
-        dataStructure distance;
-        dataStructure prev;
-        priority_queue< pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > pq;
+    dataStructure shortestPath(Graph &graph, long long int &startIndex, long long int &endIndex) {
+        dataStructure distance(graph.nodes.size(), INT_MAX);
+        priority_queue< pair<long long int, long long int>, vector<pair<long long int, long long int> >, greater<pair<long long int, long long int> > > pq;
 
         for (auto &node : graph.nodes) {
-            node.second.visited = false;
-            distance[node.second.id] = INT_MAX;
-            prev[node.second.id] = -1;
+            node.visited = false;
         }
 
         distance[startIndex] = 0;
-        prev[startIndex] = startIndex;
         pq.push(make_pair(distance[startIndex], startIndex));
 
         while(!pq.empty()){
-            int currNodeIndex = pq.top().second;
+            long long int currNodeIndex = pq.top().second;
             pq.pop();
 
             Node *currNode = &graph.nodes[currNodeIndex];
@@ -84,27 +78,25 @@ public:
 
             if(currNode->id == endIndex) break;
 
-            for(int i = 0; i < currNode->neighbours.size(); ++i){
-                pair<int, Node*> neighbour = currNode->neighbours[i];
+            for(long long int i = 0; i < currNode->neighbours.size(); ++i){
+                pair<long long int, Node*> neighbour = currNode->neighbours[i];
 
                 if(neighbour.second->visited) continue;
-
                 if(distance[neighbour.second->id] > distance[currNode->id] + neighbour.first){
                     distance[neighbour.second->id] = distance[currNode->id] + neighbour.first;
-                    prev[neighbour.second->id] = currNode->id;
                     pq.push(make_pair(distance[neighbour.second->id], neighbour.second->id));
                 }
             }
         }
-        return make_pair(distance, prev);
+        return distance;
     }
 };
 
 int main() {
     ios_base::sync_with_stdio(false);
-    
-    int nrOfRows, nrOfCols;
-    vector<pair<int, int> > directions;
+
+    long long int nrOfRows, nrOfCols;
+    vector<pair<long long int, long long int> > directions;
     directions.push_back(make_pair(-1, 0));
     directions.push_back(make_pair(-1, 1));
     directions.push_back(make_pair(0, 1));
@@ -114,49 +106,50 @@ int main() {
     directions.push_back(make_pair(0, -1));
     directions.push_back(make_pair(-1, -1));
 
-    scanf("%d%d", &nrOfRows, &nrOfCols);
-    int sea[nrOfRows][nrOfCols];
-    int nodeMap[nrOfRows][nrOfCols];
+
     Graph graph = Graph();
+    scanf("%lld%lld", &nrOfRows, &nrOfCols);
+    long long int sea[nrOfRows][nrOfCols];
+    long long int nodeMap[nrOfRows][nrOfCols];
 
+    long long int count = 0;
+    for (long long int i = 0; i < nrOfRows; ++i) {
 
-    int count = 0;
-    for (int i = 0; i < nrOfRows; ++i) {
-        for (int j = 0; j < nrOfCols; ++j) {
-            int n;
-            scanf("%d", &n);
-            sea[i][j] = n;
+        for (long long int j = 0; j < nrOfCols; ++j) {
+            char c;
+            scanf(" %c", &c);
+
+            int value = c - '0';
+            sea[i][j] = value;
             nodeMap[i][j] = count;
             graph.addNode(count);
             count++;
         }
     }
 
-    for (int k = 0; k < nrOfRows; ++k) {
-        for (int i = 0; i < nrOfCols; ++i) {
-            for (int j = 0; j < directions.size(); ++j) {
-                int row = i + directions[j].first;
-                int col = i + directions[j].second;
+    for (long long int k = 0; k < nrOfRows; ++k) {
+        for (long long int i = 0; i < nrOfCols; ++i) {
+            for (long long int j = 0; j < directions.size(); ++j) {
+                long long int row = k + directions[j].first;
+                long long int col = i + directions[j].second;
                 if(row >= 0 && col >= 0 && row < nrOfRows && col < nrOfCols){
-                    int v = sea[i][j];
-                    if(v == j) graph.addEdge(nodeMap[i][j], nodeMap[row][col], 0);
-                    else graph.addEdge(nodeMap[i][j], nodeMap[row][col], 1);
+                    long long int v = sea[k][i];
+                    if(v == j) graph.addEdge(nodeMap[k][i], nodeMap[row][col], 0);
+                    else graph.addEdge(nodeMap[k][i], nodeMap[row][col], 1);
                 }
             }
         }
     }
 
     Dijkstras dijkstras = Dijkstras();
+    long long int queries;
+    scanf("%lld", &queries);
 
-    int queries;
-    scanf("%d", &queries);
-
-    for (int l = 0; l < queries; ++l) {
-        int rs, cs, rd, cd;
-        scanf("%d%d%d%d", &rs, &cs, &rd, &cd);
-        pair<dataStructure, dataStructure> result = dijkstras.shortestPath(graph, nodeMap[rs][cs], nodeMap[rd][cd]);
-        dataStructure distanceMap = result.first;
-        printf("%d\n", distanceMap[nodeMap[rd][cd]]);
+    for (long long int l = 0; l < queries; ++l) {
+        long long int rs, cs, rd, cd;
+        scanf("%lld%lld%lld%lld", &rs, &cs, &rd, &cd);
+        dataStructure result = dijkstras.shortestPath(graph, nodeMap[rs-1][cs-1], nodeMap[rd-1][cd-1]);
+        printf("%lld\n", result[nodeMap[rd-1][cd-1]]);
     }
 
     return 0;
