@@ -3,5 +3,5 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis robot_turtles/RobotTurtles.cpp)
+add_executable(kattis string_matching/StringMatching.cpp)
 
