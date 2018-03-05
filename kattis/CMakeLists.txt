@@ -3,5 +3,5 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis string_matching/StringMatching.cpp)
+add_executable(kattis suffix_array_reconstruction/SuffixArrayReconstruction.cpp)
 
