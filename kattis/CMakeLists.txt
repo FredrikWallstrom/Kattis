@@ -3,5 +3,5 @@ project(kattis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(kattis yet_sat_again/YetSatAgain.cpp)
+add_executable(kattis happy_prime/HappyPrime.cpp)
 
