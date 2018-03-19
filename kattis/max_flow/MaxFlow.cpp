@@ -65,7 +65,7 @@ struct Graph{
 
 struct FordFulkerson{
 
-    bool bfs(int &source, int &sink, int prev[], vector<vector<long int> > residualEdges, Graph &graph) {
+    bool bfs(int &source, int &sink, int prev[], vector<vector<long int> > &residualEdges, Graph &graph) {
         bool visited[graph.nodes.size()];
         for (int i = 0; i < graph.nodes.size(); ++i) visited[i] = false;
 
@@ -78,8 +78,10 @@ struct FordFulkerson{
         {
             int from = q.front();
             q.pop();
-            vector<int> neighbours = graph.nodes[from].neighbours;
-            for (int neighbour : neighbours) {
+
+            vector<int> *neighbours = &graph.nodes[from].neighbours;
+            for (int i = 0; i < neighbours->size(); ++i) {
+                int neighbour = (*neighbours)[i];
                 if (!visited[neighbour] && residualEdges[from][neighbour] > 0)
                 {
                     q.push(neighbour);
